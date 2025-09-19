@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nutritionist | GharSe</title>
+  <link rel="icon" href="Gharse.png" type="image/x-icon" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nutrition-header {
+      background: var(--background-light);
+      box-shadow: var(--shadow-light);
+      padding: 0.99rem 2rem;
+      padding-left: 15rem;
+      /* 👈 Shift the entire heading area right */
+      display: flex;
+      align-items: center;
+      gap: rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #cdc1b3;
+      /* 👈 This is your current background */
+      color: var(--text-dark);
+    }
+
+
+    .nutrition-header .logo {
+      width: 40px;
+      height: 40px;
+
+    }
+
+    .nutrition-header .brand-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .section-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .section-toggle button {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius);
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .section-toggle button.active {
+      background-color: #e55a2b;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nutritionist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      box-shadow: var(--shadow-light);
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating {
+      color: var(--accent-color);
+      font-weight: bold;
+      margin: 0.3rem 0;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff3cd;
+      color: #856404;
+      padding: 1rem 2rem;
+      border: 1px solid #ffeeba;
+      border-radius: var(--border-radius);
+      z-index: 1000;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .input-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Header with GharSe Logo -->
+  <div class="nutrition-header">
+    <img src="logo.png" alt="GharSe Logo" class="logo" />
+    <div class="brand-text">GharSe Nutritionist</div>
+  </div>
+
+  <div class="container">
+    <!-- Toggle Switch -->
+    <div class="section-toggle">
+      <button id="realBtn" class="active" onclick="showSection('real')">Human Nutritionist</button>
+      <button id="aiBtn" onclick="showSection('ai')">AI Nutritionist</button>
+    </div>
+
+    <!-- Human Nutritionist Section -->
+    <div class="section active" id="realSection">
+      <div class="input-group">
+        <input type="text" id="userLocationInput" class="input-field" placeholder="Enter your location">
+        <button class="btn btn-primary" onclick="searchNutritionists()">Search Nutritionists</button>
+      </div>
+
+      <div class="nutritionist-grid" id="nutritionistList">
+        <!-- JS will inject cards here -->
+      </div>
+    </div>
+
+    <!-- AI Nutritionist Section -->
+    <div class="section" id="aiSection">
+      <p style="text-align: center; font-weight: bold; margin-bottom: 1rem;">AI-powered diet suggestions coming soon!
+      </p>
+      <div style="text-align: center;">
+        <button class="btn btn-outline" onclick="showComingSoon()">Try AI Nutritionist</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">Coming Soon!</div>
+
+  <!-- Paste this in your script.js bottom section -->
+  <script>
+    function showSection(section) {
+      document.getElementById('realSection').classList.remove('active');
+      document.getElementById('aiSection').classList.remove('active');
+      document.getElementById('realBtn').classList.remove('active');
+      document.getElementById('aiBtn').classList.remove('active');
+
+      if (section === 'real') {
+        document.getElementById('realSection').classList.add('active');
+        document.getElementById('realBtn').classList.add('active');
+      } else {
+        document.getElementById('aiSection').classList.add('active');
+        document.getElementById('aiBtn').classList.add('active');
+      }
+    }
+
+    function searchNutritionists() {
+      const location = document.getElementById('userLocationInput').value.trim();
+      const grid = document.getElementById('nutritionistList');
+      if (!location) {
+        alert('Please enter your location.');
+        return;
+      }
+
+      // Dummy sample
+      const docs = [
+        {
+          name: "Dr. Sneha Roy",
+          phone: "9876543210",
+          rating: "4.7",
+          img: "https://i.imgur.com/NZxGQdP.png"
+        },
+        {
+          name: "Dr. Arvind Das",
+          phone: "9123456780",
+          rating: "4.5",
+          img: "https://i.imgur.com/Y9qTZYt.png"
+        }
+      ];
+
+      grid.innerHTML = '';
+      docs.forEach(doc => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${doc.img}" alt="${doc.name}" />
+          <h3>${doc.name}</h3>
+          <p>📞 ${doc.phone}</p>
+          <p class="rating">⭐ ${doc.rating}</p>
+          <button class="btn btn-outline">Chat</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function showComingSoon() {
+      const popup = document.getElementById('popup');
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 2000);
+    }
+  </script>
+
+</body>
+
+</html>

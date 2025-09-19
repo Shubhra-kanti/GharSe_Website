@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GharSe - Bringing the taste of home, wherever you are!</title>
+    <link rel="icon" href="Gharse.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <img src="logo.png" alt="GharSe" class="logo">
+                <span class="brand-text">GharSe</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="nutrationist.html" class="nav-link">Contact Nutritionist</a> <!-- 👈 New Link -->
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" onclick="openAuthModal('login')">Login</button>
+                    <button class="btn btn-primary" onclick="openAuthModal('register')">Sign Up</button>
+                </div>
+                <div class="user-menu hidden" id="userMenu">
+                    <button class="btn btn-outline" onclick="showDashboard()">Dashboard</button>
+                    <button class="btn btn-outline" onclick="showOrders()">Orders</button>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Bringing the taste of home, wherever you are!</h1>
+            <p class="hero-subtitle">Connect with local home chefs and enjoy authentic, home-cooked meals delivered to
+                your doorstep</p>
+
+            <!-- Search and Filter Section -->
+            <div class="search-section">
+                <div class="location-input">
+                    <input type="text" id="locationInput" placeholder="Enter your location" class="input-field">
+                    <button class="btn btn-secondary" onclick="getCurrentLocation()">Use Current Location</button>
+                </div>
+
+                <div class="cuisine-filters">
+                    <h3>Choose Your Cuisine</h3>
+                    <div class="filter-chips">
+                        <button class="filter-chip active" data-cuisine="all">All</button>
+                        <button class="filter-chip" data-cuisine="bengali">Bengali</button>
+                        <button class="filter-chip" data-cuisine="south-indian">South Indian</button>
+                        <button class="filter-chip" data-cuisine="north-indian">North Indian</button>
+                        <button class="filter-chip" data-cuisine="gujarati">Gujarati</button>
+                        <button class="filter-chip" data-cuisine="maharashtrian">Maharashtrian</button>
+                        <button class="filter-chip" data-cuisine="punjabi">Punjabi</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-large" onclick="searchKitchens()">Find Home Kitchens</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kitchen Listings -->
+    <section class="kitchens-section" id="kitchensSection">
+        <div class="container">
+            <h2>Available Home Kitchens</h2>
+            <div class="kitchens-grid" id="kitchensGrid">
+                <!-- Kitchen cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2>Why Choose GharSe?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Authentic Home Cooking</h3>
+                    <p>Experience the warmth of home-cooked meals prepared by local home chefs with love and care</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👩‍🍳</div>
+                    <h3>Trusted Home Chefs</h3>
+                    <p>All our home chefs are verified and rated by the community for quality and hygiene</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Regional Specialties</h3>
+                    <p>Discover authentic regional cuisines from across India, made by local experts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Affordable Pricing</h3>
+                    <p>Enjoy restaurant-quality meals at home-cooked prices with transparent pricing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2>How GharSe Works</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Choose Your Location</h3>
+                    <p>Enter your location to find nearby home kitchens</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Browse & Select</h3>
+                    <p>Browse home kitchens, read reviews, and select your favorite meals</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Place Your Order</h3>
+                    <p>Add items to cart and place your order with secure payment</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Enjoy Your Meal</h3>
+                    <p>Receive fresh, home-cooked meals delivered to your doorstep</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GharSe</h3>
+                    <p>Bringing the taste of home, wherever you are!</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#how-it-works">How it Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>For Cooks</h4>
+                    <ul>
+                        <li><a href="#" onclick="openCookRegistration()">Join as Cook</a></li>
+                        <li><a href="cook-dashboard.html">Cook Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GharSe. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay hidden" id="authModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="authModalTitle">Login</h2>
+                <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="input-field" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="input-field"
+                            placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group" id="phoneGroup" style="display: none;">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="input-field"
+                            placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group" id="locationGroup" style="display: none;">
+                        <label for="userLocation">Location</label>
+                        <input type="text" id="userLocation" name="location" class="input-field"
+                            placeholder="Enter your location">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="authSubmitBtn">Login</button>
+                </form>
+                <div class="auth-switch">
+                    <p id="authSwitchText">Don't have an account? <a href="#" onclick="switchAuthMode()">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart -->
+    <div class="cart-sidebar hidden" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated by JavaScript -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cartTotal">0</span></strong>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Cart Toggle Button -->
+    <button class="cart-toggle hidden" id="cartToggle" onclick="toggleCart()">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<!-- not required the  bug in sighing of the page -->

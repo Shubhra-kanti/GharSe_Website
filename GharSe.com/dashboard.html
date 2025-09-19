@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GharSe</title>
+    <link rel="icon" href="Gharse.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <img src="logo.png" alt="GharSe" class="logo">
+                <span class="brand-text">GharSe</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Welcome back, <span id="userName">User</span>!</h1>
+                <p>Manage your orders, favorites, and account settings</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Quick Stats -->
+                <div class="dashboard-card stats-card">
+                    <h3>Quick Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalOrders">0</div>
+                            <div class="stat-label">Total Orders</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalSpent">₹0</div>
+                            <div class="stat-label">Total Spent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="favoriteKitchens">0</div>
+                            <div class="stat-label">Favorite Kitchens</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="dashboard-card orders-card">
+                    <h3>Recent Orders</h3>
+                    <div class="recent-orders" id="recentOrders">
+                        <!-- Orders will be populated by JavaScript -->
+                    </div>
+                    <a href="orders.html" class="btn btn-outline">View All Orders</a>
+                </div>
+
+                <!-- Favorite Kitchens -->
+                <div class="dashboard-card favorites-card">
+                    <h3>Favorite Kitchens</h3>
+                    <div class="favorite-kitchens" id="favoriteKitchens">
+                        <!-- Favorites will be populated by JavaScript -->
+                    </div>
+                    <a href="index.html#kitchensSection" class="btn btn-outline">Browse All Kitchens</a>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="dashboard-card settings-card">
+                    <h3>Account Settings</h3>
+                    <div class="settings-options">
+                        <button class="setting-option" onclick="editProfile()">
+                            <span class="setting-icon">👤</span>
+                            <div>
+                                <div class="setting-title">Edit Profile</div>
+                                <div class="setting-desc">Update your personal information</div>
+                            </div>
+                        </button>
+                        <button class="setting-option" onclick="manageAddresses()">
+                            <span class="setting-icon">📍</span>
+                            <div>
+                                <div class="setting-title">Manage Addresses</div>
+                                <div class="setting-desc">Add or edit delivery addresses</div>
+                            </div>
+                        </button>
+                        <button class="setting-option" onclick="paymentMethods()">
+                            <span class="setting-icon">💳</span>
+                            <div>
+                                <div class="setting-title">Payment Methods</div>
+                                <div class="setting-desc">Manage your payment options</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Subscription Plans -->
+                <div class="dashboard-card subscription-card">
+                    <h3>Meal Subscriptions</h3>
+                    <div class="subscription-info">
+                        <p>Subscribe to your favorite home chefs for regular meals</p>
+                        <div class="subscription-benefits">
+                            <div class="benefit">✓ Up to 20% discount</div>
+                            <div class="benefit">✓ Priority delivery</div>
+                            <div class="benefit">✓ Skip or pause anytime</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="exploreSubscriptions()">
+                            Explore Subscriptions
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Refer Friends -->
+                <div class="dashboard-card referral-card">
+                    <h3>Refer Friends</h3>
+                    <div class="referral-info">
+                        <p>Invite friends and earn rewards for every successful referral</p>
+                        <div class="referral-code">
+                            <label>Your Referral Code:</label>
+                            <div class="code-display">
+                                <span id="referralCode">GHARSEUSER</span>
+                                <button class="btn btn-outline btn-small" onclick="copyReferralCode()">Copy</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="shareReferral()">
+                            Share with Friends
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Profile Edit Modal -->
+    <div class="modal-overlay hidden" id="profileModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" name="name" class="input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" name="email" class="input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhone">Phone Number</label>
+                        <input type="tel" id="profilePhone" name="phone" class="input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileLocation">Location</label>
+                        <input type="text" id="profileLocation" name="location" class="input-field" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .dashboard-main {
+            padding-top: 100px;
+            min-height: 100vh;
+            background: var(--background-warm);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--background-warm);
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .recent-orders {
+            margin-bottom: 1rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--text-dark);
+        }
+
+        .order-info p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .order-status.delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .order-status.preparing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-status.on-way {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .settings-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .setting-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            width: 100%;
+        }
+
+        .setting-option:hover {
+            background: var(--background-warm);
+            border-color: var(--primary-color);
+        }
+
+        .setting-icon {
+            font-size: 1.5rem;
+        }
+
+        .setting-title {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .setting-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .subscription-benefits {
+            margin: 1rem 0;
+        }
+
+        .benefit {
+            color: var(--success-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .referral-code {
+            margin: 1rem 0;
+        }
+
+        .code-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .code-display span {
+            font-family: monospace;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!app.isAuthenticated) {
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            initializeDashboard();
+        });
+
+        function initializeDashboard() {
+            updateUserInfo();
+            updateStats();
+            displayRecentOrders();
+            displayFavoriteKitchens();
+            generateReferralCode();
+        }
+
+        function updateUserInfo() {
+            const userName = document.getElementById('userName');
+            if (userName && app.currentUser) {
+                userName.textContent = app.currentUser.name || 'User';
+            }
+        }
+
+        function updateStats() {
+            const userOrders = app.orders.filter(order => order.userId === app.currentUser?.id);
+            const totalSpent = userOrders.reduce((sum, order) => sum + order.total, 0);
+            
+            document.getElementById('totalOrders').textContent = userOrders.length;
+            document.getElementById('totalSpent').textContent = `₹${totalSpent}`;
+            document.getElementById('favoriteKitchens').textContent = '0'; // Placeholder
+        }
+
+        function displayRecentOrders() {
+            const recentOrdersContainer = document.getElementById('recentOrders');
+            const userOrders = app.orders
+                .filter(order => order.userId === app.currentUser?.id)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 3);
+
+            if (userOrders.length === 0) {
+                recentOrdersContainer.innerHTML = '<div class="empty-state">No orders yet. Start exploring kitchens!</div>';
+                return;
+            }
+
+            recentOrdersContainer.innerHTML = '';
+            userOrders.forEach(order => {
+                const orderElement = document.createElement('div');
+                orderElement.className = 'order-item';
+                orderElement.innerHTML = `
+                    <div class="order-info">
+                        <h4>Order #${order.id.slice(-6)}</h4>
+                        <p>${new Date(order.createdAt).toLocaleDateString()} • ₹${order.total}</p>
+                    </div>
+                    <div class="order-status ${order.status}">${formatOrderStatus(order.status)}</div>
+                `;
+                recentOrdersContainer.appendChild(orderElement);
+            });
+        }
+
+        function displayFavoriteKitchens() {
+            const favoritesContainer = document.getElementById('favoriteKitchens');
+            // Placeholder - in real app, this would come from user preferences
+            favoritesContainer.innerHTML = '<div class="empty-state">No favorite kitchens yet. Heart kitchens you love!</div>';
+        }
+
+        function generateReferralCode() {
+            const referralCode = document.getElementById('referralCode');
+            if (app.currentUser) {
+                const code = `GHARSE${app.currentUser.id.slice(-4).toUpperCase()}`;
+                referralCode.textContent = code;
+            }
+        }
+
+        function formatOrderStatus(status) {
+            const statuses = {
+                'placed': 'Order Placed',
+                'confirmed': 'Confirmed',
+                'preparing': 'Preparing',
+                'on-way': 'On the Way',
+                'delivered': 'Delivered'
+            };
+            return statuses[status] || status;
+        }
+
+        function editProfile() {
+            const modal = document.getElementById('profileModal');
+            const form = document.getElementById('profileForm');
+            
+            // Pre-fill form with current user data
+            if (app.currentUser) {
+                document.getElementById('profileName').value = app.currentUser.name || '';
+                document.getElementById('profileEmail').value = app.currentUser.email || '';
+                document.getElementById('profilePhone').value = app.currentUser.phone || '';
+                document.getElementById('profileLocation').value = app.currentUser.location || '';
+            }
+            
+            modal.classList.remove('hidden');
+            
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                
+                // Update user data
+                app.currentUser.name = formData.get('name');
+                app.currentUser.email = formData.get('email');
+                app.currentUser.phone = formData.get('phone');
+                app.currentUser.location = formData.get('location');
+                
+                app.saveToStorage();
+                updateUserInfo();
+                closeProfileModal();
+                showMessage('Profile updated successfully!', 'success');
+            };
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        function manageAddresses() {
+            showMessage('Address management feature coming soon!', 'info');
+        }
+
+        function paymentMethods() {
+            showMessage('Payment methods feature coming soon!', 'info');
+        }
+
+        function exploreSubscriptions() {
+            showMessage('Subscription plans feature coming soon!', 'info');
+        }
+
+        function copyReferralCode() {
+            const code = document.getElementById('referralCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showMessage('Referral code copied to clipboard!', 'success');
+            });
+        }
+
+        function shareReferral() {
+            const code = document.getElementById('referralCode').textContent;
+            const message = `Join GharSe and enjoy authentic home-cooked meals! Use my referral code: ${code}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join GharSe',
+                    text: message,
+                    url: window.location.origin
+                });
+            } else {
+                navigator.clipboard.writeText(message).then(() => {
+                    showMessage('Referral message copied to clipboard!', 'success');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

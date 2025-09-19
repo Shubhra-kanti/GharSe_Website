@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - GharSe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Gharse.png" type="image/x-icon">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-header">
+                <img src="logo.png" alt="GharSe" class="logo">
+                <h1>Welcome to GharSe</h1>
+                <p>Bringing the taste of home, wherever you are!</p>
+            </div>
+            
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <div class="auth-form active" id="loginForm">
+                    <h2>Login to Your Account</h2>
+                    <form id="loginFormElement">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" name="email" class="input-field" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="password" class="input-field" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Login</button>
+                    </form>
+                    <div class="auth-switch">
+                        <p>Don't have an account? <a href="#" onclick="switchToRegister()">Sign up</a></p>
+                    </div>
+                </div>
+                
+                <!-- Register Form -->
+                <div class="auth-form" id="registerForm">
+                    <h2>Create Your Account</h2>
+                    <form id="registerFormElement">
+                        <div class="form-group">
+                            <label for="registerName">Full Name</label>
+                            <input type="text" id="registerName" name="name" class="input-field" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" name="email" class="input-field" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" id="registerPassword" name="password" class="input-field" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone">Phone Number</label>
+                            <input type="tel" id="registerPhone" name="phone" class="input-field" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerLocation">Location</label>
+                            <input type="text" id="registerLocation" name="location" class="input-field" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+                    </form>
+                    <div class="auth-switch">
+                        <p>Already have an account? <a href="#" onclick="switchToLogin()">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background-warm) 0%, #fff5e6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-medium);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header .logo {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .auth-header h1 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--text-light);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form h2 {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+    </style>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already authenticated
+            if (app.isAuthenticated) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Setup form handlers
+            document.getElementById('loginFormElement').addEventListener('submit', handleLogin);
+            document.getElementById('registerFormElement').addEventListener('submit', handleRegister);
+        });
+
+        function switchToRegister() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.add('active');
+        }
+
+        function switchToLogin() {
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.add('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const result = app.login(formData.get('email'), formData.get('password'));
+            
+            if (result.success) {
+                showMessage('Login successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                showMessage(result.message, 'error');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                phone: formData.get('phone'),
+                location: formData.get('location')
+            };
+            
+            const result = app.register(userData);
+            
+            if (result.success) {
+                showMessage('Registration successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                showMessage(result.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
